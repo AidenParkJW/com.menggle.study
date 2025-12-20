@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "884176781691",
+    "firebase_url": "https://app-daonelab-com-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "app-daonelab-com",
+    "storage_bucket": "app-daonelab-com.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:884176781691:android:706408de70b28553f7bdde",
+        "android_client_info": {
+          "package_name": "com.menggle.study"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3GOvYA7QvZcazlwIpCZK2wCjpo0tr94I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
