@@ -6,7 +6,7 @@ import 'todo.dart';
 import 'todoDB02.dart';
 
 class TodoDB01 extends StatefulWidget {
-  late final DBHelper _dbHelper = DBHelper.getInstance();
+  final DBHelper _dbHelper = DBHelper.getInstance();
 
   TodoDB01({super.key});
 

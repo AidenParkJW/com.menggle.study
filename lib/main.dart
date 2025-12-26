@@ -212,7 +212,7 @@ class _MyHomePage extends State<MyHomePage>
       bottomNavigationBar: Container(
         color: Colors.black,
         child: TabBar(
-          labelColor: const Color.fromARGB(255, 122, 53, 53),
+          labelColor: Colors.white,
           unselectedLabelColor: Colors.white,
           tabs: [
             Tab(icon: Icon(Icons.pets)),
