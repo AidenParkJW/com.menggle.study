@@ -5,35 +5,17 @@ import "package:http/http.dart" as http;
 import 'package:intl/intl.dart';
 import "package:table_calendar/table_calendar.dart";
 
-void main() => runApp(const MyApp());
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "HttpApp",
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const HttpApp(title: "This is Http App"),
-    );
-  }
-}
-
-class HttpApp extends StatefulWidget {
-  const HttpApp({super.key, required this.title});
-
-  final String title;
+class WeatherMain extends StatefulWidget {
+  const WeatherMain({super.key});
 
   @override
   State<StatefulWidget> createState() {
-    return _HttpApp();
+    return _WeatherMain();
   }
 }
 
-class _HttpApp extends State<HttpApp> {
+class _WeatherMain extends State<WeatherMain> {
   String _title = "";
   String _message = "";
   final List _fcstList = List.empty(growable: true);
@@ -52,7 +34,7 @@ class _HttpApp extends State<HttpApp> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text("Weather Api 통신"),
       ),
       body: Center(
           child: Column(
@@ -78,8 +60,8 @@ class _HttpApp extends State<HttpApp> {
                       _selectedDay = selectedDay;
                       _focusedDay = focusedDay;
 
-                      DateTime _viewDay = _selectedDay!.add(const Duration(days: -1));
-                      _callApi(DateFormat("yyyyMMdd").format(_viewDay));
+                      DateTime viewDay = _selectedDay!.add(const Duration(days: -1));
+                      _callApi(DateFormat("yyyyMMdd").format(viewDay));
                     });
                   }
                 },
@@ -105,8 +87,7 @@ class _HttpApp extends State<HttpApp> {
               ),
               Text(_title),
               Text(_message),
-              SizedBox(
-                height: 240,
+              Expanded(
                 child: Scrollbar(
                   thumbVisibility: true,
                   controller: _controller,
@@ -116,19 +97,19 @@ class _HttpApp extends State<HttpApp> {
                     itemCount: _fcstList.length,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, position) {
-                      String _fcstDT = _fcstList[position]["fcstDT"];
-                      Map _info = _fcstList[position]["info"];
+                      String fcstDT = _fcstList[position]["fcstDT"];
+                      Map info = _fcstList[position]["info"];
                       return Padding(
                         padding: const EdgeInsets.all(20),
                         child: Column(
                           children: <Widget>[
                             Padding(
                               padding: const EdgeInsets.only(top: 5, bottom: 5),
-                              child: Text(DateFormat("yyyy-MM-dd HH:mm").format(DateTime.parse(_fcstDT))),
+                              child: Text(DateFormat("yyyy-MM-dd HH:mm").format(DateTime.parse(fcstDT))),
                             ),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: _info.keys.map((key) => Text("${_getName(key)} : " + _info[key])).toList(),
+                              children: info.keys.map((key) => Text("${_getName(key)} : " + info[key])).toList(),
                             ),
                           ],
                         ),
@@ -148,40 +129,40 @@ class _HttpApp extends State<HttpApp> {
     url += "&pageNo=1";
     url += "&numOfRows=290";
     url += "&dataType=JSON";
-    url += "&base_date=${selectedDay}";
+    url += "&base_date=$selectedDay";
     url += "&base_time=2300";
     url += "&nx=55";
     url += "&ny=127";
 
     var response = await http.get(Uri.parse(url));
-    Map _json = json.decode(response.body);
+    Map map = json.decode(response.body);
 
     setState(() {
       _fcstList.clear();
       _title = DateFormat("yyyy-MM-dd").format(_selectedDay!);
 
-      if (_json["response"]["header"]["resultCode"] != "00") {
-        _message = _json["response"]["header"]["resultMsg"];
+      if (map["response"]["header"]["resultCode"] != "00") {
+        _message = map["response"]["header"]["resultMsg"];
       } else {
         _message = "";
       }
 
-      if (_json["response"]["header"]["resultCode"] == "00") {
-        List _list = _json["response"]["body"]["items"]["item"];
-        _list.forEach((item) {
-          Map _fcstItem = _fcstList.firstWhere((element) => element["fcstDT"] == item["fcstDate"] + "T" + item["fcstTime"] + "00", orElse: () => {});
+      if (map["response"]["header"]["resultCode"] == "00") {
+        List list = map["response"]["body"]["items"]["item"];
+        for (var item in list) {
+          Map fcstItem = _fcstList.firstWhere((element) => element["fcstDT"] == item["fcstDate"] + "T" + item["fcstTime"] + "00", orElse: () => {});
 
-          if (_fcstItem.isEmpty) {
-            Map _newItem = {};
-            _newItem["fcstDT"] = item["fcstDate"] + "T" + item["fcstTime"] + "00";
-            _newItem["info"] = {item["category"]: item["fcstValue"]};
+          if (fcstItem.isEmpty) {
+            Map newItem = {};
+            newItem["fcstDT"] = item["fcstDate"] + "T" + item["fcstTime"] + "00";
+            newItem["info"] = {item["category"]: item["fcstValue"]};
 
-            _fcstList.add(_newItem);
+            _fcstList.add(newItem);
           } else {
-            Map _info = _fcstItem["info"];
-            _info[item["category"]] = item["fcstValue"];
+            Map info = fcstItem["info"];
+            info[item["category"]] = item["fcstValue"];
           }
-        });
+        }
       }
     });
   }

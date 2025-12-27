@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'bloc/bloc_main.dart';
+import 'calc_main.dart';
 import 'firebase/ads_main.dart';
 import 'firebase/memo_main.dart';
 import 'firebase/noti_main.dart';
@@ -18,6 +19,7 @@ import 'sub/second_page.dart';
 import 'todo_db/todoDB01.dart';
 import 'todo_txt/todoTxt01.dart';
 import 'todo_txt/todoTxt02.dart';
+import 'weather_main.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -75,7 +77,7 @@ class _MyHomePage extends State<MyHomePage>
     super.initState();
 
     // vsync: this를 사용하기 위해서 SingleTickerProviderStateMixin 상속
-    _tabCtrl = TabController(length: 12, vsync: this);
+    _tabCtrl = TabController(length: 14, vsync: this);
 
     _tabCtrl.addListener(() {
       if (!_tabCtrl.indexIsChanging) {
@@ -180,6 +182,8 @@ class _MyHomePage extends State<MyHomePage>
               AdsMain(),
               MemoMain(),
               NotiMain(),
+              WeatherMain(),
+              CalcMain(),
             ],
           ),
 
@@ -227,6 +231,8 @@ class _MyHomePage extends State<MyHomePage>
             Tab(icon: Icon(Icons.ads_click)),
             Tab(icon: Icon(Icons.cloud_sync)),
             Tab(icon: Icon(Icons.notifications)),
+            Tab(icon: Icon(Icons.umbrella)),
+            Tab(icon: Icon(Icons.calculate)),
           ],
           indicatorColor: Colors.blue,
           dividerColor: Colors.black,

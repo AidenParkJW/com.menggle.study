@@ -44,64 +44,66 @@ class _TodoDB01 extends State<TodoDB01> {
                 if (snapshot.hasData) {
                   List<Todo> todoList = snapshot.data as List<Todo>;
 
-                  return ListView.builder(
-                    itemCount: todoList.length,
-                    itemBuilder: (context, index) {
-                      Todo todo = todoList[index];
+                  return todoList.isEmpty
+                      ? Text('No data')
+                      : ListView.builder(
+                          itemCount: todoList.length,
+                          itemBuilder: (context, index) {
+                            Todo todo = todoList[index];
 
-                      return ListTile(
-                        leadingAndTrailingTextStyle: const TextStyle(
-                          fontSize: 20,
-                          color: Colors.black,
-                        ),
-                        leading: Text('${todo.id}'),
-                        title: Text(todo.title),
-                        subtitle: Text(
-                          todo.content,
-                          style: const TextStyle(fontSize: 30),
-                        ),
-                        trailing: Text(
-                          "달성여부 : ${todo.isActive == 1 ? '예' : '아니오'}",
-                        ),
+                            return ListTile(
+                              leadingAndTrailingTextStyle: const TextStyle(
+                                fontSize: 20,
+                                color: Colors.black,
+                              ),
+                              leading: Text('${todo.id}'),
+                              title: Text(todo.title),
+                              subtitle: Text(
+                                todo.content,
+                                style: const TextStyle(fontSize: 30),
+                              ),
+                              trailing: Text(
+                                "달성여부 : ${todo.isActive == 1 ? '예' : '아니오'}",
+                              ),
 
-                        onTap: () {
-                          _addTodo(Todo.clone(todo));
-                        },
-                        onLongPress: () {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: Text('${todo.id} : ${todo.title}'),
-                                content: Text(
-                                  "'${todo.content}'을(를) 삭제하시겠습니까?)",
-                                  style: const TextStyle(fontSize: 30),
-                                ),
-                                actions: [
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      _deleteTodo(todo);
+                              onTap: () {
+                                _addTodo(Todo.clone(todo));
+                              },
+                              onLongPress: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Text('${todo.id} : ${todo.title}'),
+                                      content: Text(
+                                        "'${todo.content}'을(를) 삭제하시겠습니까?)",
+                                        style: const TextStyle(fontSize: 30),
+                                      ),
+                                      actions: [
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            _deleteTodo(todo);
 
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: const Text('예'),
-                                  ),
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: const Text('아니오'),
-                                  ),
-                                ],
-                              );
-                            },
-                          );
-                        },
-                      );
-                    },
-                  );
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: const Text('예'),
+                                        ),
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: const Text('아니오'),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              },
+                            );
+                          },
+                        );
                 } else {
-                  return Text('No data');
+                  return Text('Error Occured');
                 }
             }
           },
