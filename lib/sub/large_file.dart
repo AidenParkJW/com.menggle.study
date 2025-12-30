@@ -98,7 +98,7 @@ class _LargeFile extends State<LargeFile> {
     Dio dio = Dio();
 
     try {
-      //data/user/0/com.example.study/app_flutter/
+      //data/user/0/com.menggle.study/app_flutter/
       var dir = await getApplicationDocumentsDirectory();
       filePath = '${dir.path}/myimage.jpg';
       await dio.download(
@@ -125,7 +125,7 @@ class _LargeFile extends State<LargeFile> {
   }
 
   Future<Widget> loadImage(String filePath) async {
-    //data/user/0/com.example.study/app_flutter/myimage.jpg
+    //data/user/0/com.menggle.study/app_flutter/myimage.jpg
     //print(filePath);
     
     File file = File(filePath);
